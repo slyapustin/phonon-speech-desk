@@ -4,7 +4,7 @@ A working Apple silicon speech-to-text POC: live microphone transcription, audio
 
 ## Quick start
 
-This is the original browser experiment, separate from the Call Note desktop app. Each coworker runs it locally on an **Apple Silicon Mac**. It is not a hosted website or a Windows release.
+Run the app locally on an **Apple Silicon Mac**.
 
 Install Python 3.13 and FFmpeg if needed, then:
 

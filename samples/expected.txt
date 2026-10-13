@@ -1,0 +1,1 @@
+This is a local speech recognition test on my Mac. The audio stays on this computer. Please schedule a meeting for tomorrow morning at ten, and remind me to bring the project notes.

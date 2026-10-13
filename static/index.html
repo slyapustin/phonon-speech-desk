@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Phonon — local speech desk</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/playback.css">
+  <script defer src="/static/live.js"></script>
+  <script defer src="/static/app.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <a class="brand" href="/" aria-label="Phonon home"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M3 12v6m6-12v18m6-23v28m6-23v18m6-12v6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>phonon<span>speech desk</span></a>
+      <div class="status"><span id="status-dot"></span><span id="engine-status" role="status">Starting engine…</span></div>
+    </header>
+    <main>
+      <div class="intro"><h1>Speak. See it in words.</h1><p>English speech to text, right here on your Mac.</p></div>
+      <div class="desk">
+        <section class="input-pane" aria-label="Audio input">
+          <div class="section-heading"><h2>Your audio</h2><span class="pill">On-device</span></div>
+          <div class="recorder">
+            <canvas id="wave" width="600" height="180" aria-label="Microphone audio level"></canvas>
+            <div id="timer">00:00</div>
+            <p id="record-hint">Ready when you are.</p>
+            <button id="record" class="primary" disabled><span class="record-mark"></span><span id="record-label">Start recording</span></button>
+            <label class="live-toggle"><input type="checkbox" id="live-mode" checked> Live transcript while you speak</label>
+            <p class="small">Phrases settle after pauses. Up to 10 minutes.</p>
+          </div>
+          <div class="divider"><span>or use an audio file</span></div>
+          <label class="dropzone" id="dropzone" for="file"><svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 16V3m-5 5 5-5 5 5M4 15v5h16v-5"/></svg><strong>Choose a file or drop it here</strong><span>WAV, MP3, M4A, FLAC, OGG, WebM · up to 32 MB</span></label>
+          <input id="file" class="file-input" type="file" accept="audio/*,.m4a,.webm,.aiff" disabled>
+          <label class="hotwords-label" for="hotwords">Names &amp; specialist words <span>optional</span></label>
+          <input id="hotwords" type="text" placeholder="e.g. Fermion, Ada Lovelace" maxlength="1000">
+          <p class="small">Separate up to 25 terms with commas.</p>
+          <div class="sample-library">
+            <label class="hotwords-label" for="sample-select">Sample library</label>
+            <select id="sample-select" disabled><option>Loading samples…</option></select>
+            <p id="sample-description" class="small">Clean and degraded versions of the same synthetic speech.</p>
+            <details id="reference-panel" hidden><summary>Read the reference text</summary><p id="reference-text"></p></details>
+          </div>
+          <div class="audio-preview">
+            <strong id="audio-name">Listen before you transcribe</strong>
+            <audio id="audio-player" controls preload="metadata" aria-label="Listen to selected audio"></audio>
+            <div class="audio-actions"><button id="sample" disabled>Transcribe this audio</button><a id="save-audio" hidden>Save audio</a></div>
+            <p class="small">New recordings can be replayed here until you replace them or reload.</p>
+          </div>
+        </section>
+        <section class="output-pane" aria-label="Transcription output">
+          <div class="section-heading"><h2>Transcript <span id="live-indicator" hidden>Live</span></h2><span id="word-count" class="muted">No audio yet</span></div>
+          <div id="notice" role="status" aria-live="polite">Loading Phonon-2. The first launch downloads the model.</div>
+          <textarea id="transcript" aria-label="Editable transcript" placeholder="Your words will appear here.&#10;&#10;Record something, choose a file, or try the sample." spellcheck="true"></textarea>
+          <div class="transcript-actions"><button id="copy" disabled>Copy text</button><button id="download" disabled>Save .txt</button><button id="json" disabled>Save timing data</button></div>
+          <div class="metrics" aria-label="Performance measurements"><div><span>Audio length</span><strong id="audio-time">—</strong></div><div><span id="process-label">Processing</span><strong id="process-time">—</strong></div><div><span>Faster than realtime</span><strong id="speed">—</strong></div></div>
+          <details><summary>Engine &amp; timing details</summary><p id="engine-detail">Waiting for the local engine.</p><p id="timing-detail">Processing includes audio conversion and transcription. Model startup is measured separately.</p><p>Phonon-2 supports English. Live text is provisional until a phrase ends. Turn off Live transcript for record-then-transcribe mode.</p></details>
+        </section>
+      </div>
+    </main>
+    <footer><span>No cloud transcription. No audio history.</span><span>Phonon-2 by <a href="https://www.fermionresearch.com/research/phonon-2/" target="_blank" rel="noreferrer">Fermion Research</a> · Local proof of concept</span></footer>
+  </div>
+</body>
+</html>

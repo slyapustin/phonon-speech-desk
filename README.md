@@ -6,12 +6,12 @@ A working Apple silicon speech-to-text POC: live microphone transcription, audio
 
 This is the original browser experiment, separate from the Call Note desktop app. Each coworker runs it locally on an **Apple Silicon Mac**. It is not a hosted website or a Windows release.
 
-Install Python 3.11 and FFmpeg if needed, then:
+Install Python 3.13 and FFmpeg if needed, then:
 
 ```sh
 git clone https://github.com/slyapustin/phonon-speech-desk.git
 cd phonon-speech-desk
-brew install python@3.11 ffmpeg
+brew install python@3.13 ffmpeg
 ./setup.sh
 ./make_sample.sh
 ./run.sh
@@ -66,7 +66,9 @@ The small download is not the working-memory footprint: the Apple silicon fast p
 
 ## Measured on this Mac
 
-Verified on **Apple M1 Pro, 16 GB RAM, macOS 27.0.1, Python 3.11.17**, with `fermion-research 0.2.11`, MLX 0.32.3 and the `tdt16,dense16` fast paths. No CPU fallback was used.
+The current setup is verified with **Python 3.13.16**: all 14 backend tests pass, dependency checks pass, and the 107.9-second clean sample transcribed locally in 1.31 seconds (conversion and inference, excluding model startup).
+
+The initial measurements below were verified on **Apple M1 Pro, 16 GB RAM, macOS 27.0.1, Python 3.11.17**, with `fermion-research 0.2.11`, MLX 0.32.3 and the `tdt16,dense16` fast paths. No CPU fallback was used.
 
 The synthetic English sample is 10.424 seconds, generated with the built-in Samantha voice. Its output matched `samples/expected.txt` in the initial browser test and all three subsequent benchmark requests.
 
@@ -91,16 +93,23 @@ Detailed results are written to `test-results/benchmark.json`. File transcriptio
 
 ## Install from scratch
 
-Requirements: Apple silicon Mac with Metal access, Python 3.11+ (3.11 tested), FFmpeg, and internet for installation/model download. `requirements.txt` pins the complete tested environment; it includes upstream dependencies beyond the 164 MB model. Older macOS/Python combinations have not been validated.
+Requirements: Apple silicon Mac with Metal access, Python 3.13, FFmpeg, and internet for installation/model download. `requirements.txt` pins the complete tested environment; it includes upstream dependencies beyond the 164 MB model. Older macOS/Python combinations have not been validated.
 
 ```sh
-brew install python@3.11 ffmpeg  # only if missing
+brew install python@3.13 ffmpeg  # only if missing
 ./setup.sh
 ./make_sample.sh
 ./run.sh
 ```
 
-`setup.sh` uses `python3.11`; set `PYTHON_BIN` to override it. The first launch downloads and verifies the official model. Caches live under this project's `.cache/`. After installation and model caching, transcription runs locally without an API key or cloud inference. `check_engine.py` downloads/loads the model and prints the actual backend and GPU.
+`setup.sh` uses `python3.13`; set `PYTHON_BIN` if your Python 3.13 executable has another path. An existing virtual environment made with a different Python must be renamed before rerunning setup:
+
+```sh
+mv .venv .venv.previous
+./setup.sh
+```
+
+This preserves the old environment and leaves your model cache intact. The first launch downloads and verifies the official model. Caches live under this project's `.cache/`. After installation and model caching, transcription runs locally without an API key or cloud inference. `check_engine.py` downloads/loads the model and prints the actual backend and GPU.
 
 ## Scope and data handling
 
